@@ -16,6 +16,8 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Task Manager API is running' });
 });
 
+app.use('/api/tasks', require('./routes/taskRoutes'));
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
