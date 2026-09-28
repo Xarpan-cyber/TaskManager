@@ -13,7 +13,11 @@
         <form id="task-form">
             <input type="text" id="task-title" placeholder="What needs to be done?" required autocomplete="off">
             <input type="text" id="task-desc" placeholder="Details (optional)" autocomplete="off">
-            <button type="submit">Add Task</button>
+            
+            <button id="addTaskBtn" type="submit">
+                <span id="buttonText">Add Task</span>
+                <span id="loader" class="loader"></span>
+            </button>
         </form>
 
         <ul id="task-list"></ul>
