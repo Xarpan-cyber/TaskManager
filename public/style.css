@@ -33,7 +33,22 @@ input {
     border-radius: 4px;
     font-size: 16px;
 }
+.loader {
+    display: none;
+    width: 16px;
+    height: 16px;
+    border: 3px solid rgba(255, 255, 255, 0.4);
+    border-top: 3px solid white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    margin: 0 auto;
+}
 
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
 input:focus {
     outline: none;
     border-color: #007bff;
