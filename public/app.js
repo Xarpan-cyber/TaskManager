@@ -15,16 +15,30 @@ document.addEventListener('DOMContentLoaded', fetchTasks);
 // Handle form submission
 taskForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+
     const title = taskTitleInput.value.trim();
     const description = taskDescInput.value.trim();
-    
+
     if (!title) return;
 
-    await addTask({ title, description });
-    
-    // Reset form
-    taskForm.reset();
-    taskTitleInput.focus();
+    // Show processing
+    addTaskBtn.disabled = true;
+    btnText.textContent = 'Processing...';
+    btnLoader.style.display = 'inline-block';
+
+    try {
+        await addTask({ title, description });
+
+        // Reset form
+        taskForm.reset();
+        taskTitleInput.focus();
+
+    } finally {
+        // Restore button
+        addTaskBtn.disabled = false;
+        btnText.textContent = 'Add Task';
+        btnLoader.style.display = 'none';
+    }
 });
 
 // Fetch all tasks from backend
@@ -63,7 +77,7 @@ async function toggleTaskStatus(id, currentStatus) {
             body: JSON.stringify({ completed: !currentStatus })
         });
         const updatedTask = await response.json();
-        
+
         // Update task list with the new data
         tasks = tasks.map(t => t._id === id ? updatedTask : t);
         renderTasks();
@@ -93,17 +107,17 @@ function renderTasks() {
     sortedTasks.forEach(task => {
         const li = document.createElement('li');
         if (task.completed) li.className = 'completed';
-        
+
         // Checkbox
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
         checkbox.checked = task.completed;
         checkbox.addEventListener('change', () => toggleTaskStatus(task._id, task.completed));
-        
+
         // Text Content
         const contentDiv = document.createElement('div');
         contentDiv.className = 'task-content';
-        
+
         const titleDiv = document.createElement('div');
         titleDiv.className = 'task-title';
         titleDiv.textContent = task.title;
@@ -126,7 +140,7 @@ function renderTasks() {
         li.appendChild(checkbox);
         li.appendChild(contentDiv);
         li.appendChild(deleteBtn);
-        
+
         taskList.appendChild(li);
     });
 }
